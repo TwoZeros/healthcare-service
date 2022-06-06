@@ -14,10 +14,11 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 public class TestHealthCareService {
-    PatientInfoFileRepository patientInfoFileRepository;
-    SendAlertService sendAlertService;
-    MedicalService medicalService;
-    PatientInfo patientInfo;
+    private static final String ID = UUID.randomUUID().toString();
+    private PatientInfoFileRepository patientInfoFileRepository;
+    private SendAlertService sendAlertService;
+    private MedicalService medicalService;
+    private PatientInfo patientInfo;
 
     @BeforeEach
     void setUp() {
@@ -33,28 +34,28 @@ public class TestHealthCareService {
     @Test
     public void bloodPressureIsNotNormal() {
         BloodPressure currentPressure = new BloodPressure(60, 120);
-        medicalService.checkBloodPressure(UUID.randomUUID().toString(), currentPressure);
+        medicalService.checkBloodPressure(ID, currentPressure);
         Mockito.verify(sendAlertService, Mockito.times(1)).send(Mockito.any());
     }
 
     @Test
-    public void temperatureIsNotNormal(){
+    public void temperatureIsNotNormal() {
         BigDecimal currentTemperature = new BigDecimal("33.9");
-        medicalService.checkTemperature(UUID.randomUUID().toString(), currentTemperature);
+        medicalService.checkTemperature(ID, currentTemperature);
         Mockito.verify(sendAlertService, Mockito.times(1)).send(Mockito.any());
     }
 
     @Test
     public void bloodPressureIsNormal() {
         BloodPressure currentPressure = new BloodPressure(125, 78);
-        medicalService.checkBloodPressure(UUID.randomUUID().toString(), currentPressure);
+        medicalService.checkBloodPressure(ID, currentPressure);
         Mockito.verify(sendAlertService, Mockito.never()).send(Mockito.any());
     }
 
     @Test
-    public void temperatureIsNormal(){
+    public void temperatureIsNormal() {
         BigDecimal currentTemperature = new BigDecimal("36.9");
-        medicalService.checkTemperature(UUID.randomUUID().toString(), currentTemperature);
+        medicalService.checkTemperature(ID, currentTemperature);
         Mockito.verify(sendAlertService, Mockito.never()).send(Mockito.any());
     }
 }
